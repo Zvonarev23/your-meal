@@ -1,34 +1,39 @@
-import style from './CatalogProduct.module.css';
-import { API_URI } from '../../const';
+import style from "./CatalogProduct.module.css";
+import { API_URI } from "../../const";
 import { useDispatch } from "react-redux";
-import { addProduct } from '../../store/order/orderSlice';
+import { addProduct } from "../../store/order/orderSlice";
 
 export const CatalogProduct = ({ item }) => {
-  const dispatch = useDispatch()  
+  const dispatch = useDispatch();
 
   return (
     <article className={style.product}>
-    <img src={`${API_URI}/${item.image}`} alt={item.title} className={style.image} />
+      <img
+        src={`${API_URI}/${item.image}`}
+        alt={item.title}
+        className={style.image}
+      />
 
-    <p className={style.price}>
-      {item.price}<span className="currency">&nbsp;₽</span>
-    </p>
+      <p className={style.price}>
+        {item.price}
+        <span className="currency">&nbsp;₽</span>
+      </p>
 
-    <h3 className={style.title}>
-      <button className={style.detail}>{item.title}</button>
-    </h3>
+      <h3 className={style.title}>
+        <button className={style.detail}>{item.title}</button>
+      </h3>
 
-    <p className={style.weight}>{item.weight}</p>
+      <p className={style.weight}>{item.weight}г</p>
 
-    <button
-      className={style.add} 
-      type="button"
-      onClick={() => {
-        dispatch(addProduct({id: item.id}))
-      }}
+      <button
+        className={style.add}
+        type="button"
+        onClick={() => {
+          dispatch(addProduct({ id: item.id }));
+        }}
       >
-      Добавить
-    </button>
+        Добавить
+      </button>
     </article>
   );
-}
+};
