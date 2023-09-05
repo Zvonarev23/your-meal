@@ -1,12 +1,25 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '../../store/modalDelivery/modalDeliverySlice';
-import { orderRequestAsync } from '../../store/order/orderSlice';
-import { OrderGoods } from '../OrderGoods/OrderGoods';
-import style from './Order.module.css';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { openModal } from "../../store/modalDelivery/modalDeliverySlice";
+import { orderRequestAsync } from "../../store/order/orderSlice";
+import { OrderGoods } from "../OrderGoods/OrderGoods";
+import style from "./Order.module.css";
 
 export const Order = () => {
-  const { totalPrice, totalCount, orderList, orderGoods } = useSelector(state => state.order)
+  const { totalPrice, totalCount, orderList, orderGoods } = useSelector(
+    (state) => state.order
+  );
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const showOrder = () => {
+    setIsOpen(true);
+  };
+
+  const hideOrder = () => {
+    setIsOpen(false);
+  };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -14,9 +27,14 @@ export const Order = () => {
   }, [orderList.length]);
 
   return (
-    <div className={style.order}>
+    <div className={isOpen ? style.order_open : style.order}>
       <section className={style.wrapper}>
-        <div className={style.header} tabIndex="0" role="button">
+        <div
+          onClick={showOrder}
+          className={style.header}
+          tabIndex="0"
+          role="button"
+        >
           <h2 className={style.title}>Корзина</h2>
 
           <span className={style.count}>{totalCount}</span>
@@ -24,7 +42,9 @@ export const Order = () => {
 
         <div className={style.wrap_list}>
           <ul className={style.list}>
-            {orderGoods.map((item) => <OrderGoods key={item.id} {...item} />)}
+            {orderGoods.map((item) => (
+              <OrderGoods key={item.id} {...item} />
+            ))}
           </ul>
 
           <div className={style.total}>
@@ -35,19 +55,21 @@ export const Order = () => {
             </p>
           </div>
 
-          <button 
-          className={style.submit} 
-          disabled={orderGoods.length === 0}
-          onClick={() => {
-            dispatch(openModal())
-          }}
+          <button
+            className={style.submit}
+            disabled={orderGoods.length === 0}
+            onClick={() => {
+              dispatch(openModal());
+            }}
           >
             Оформить заказ
           </button>
 
           <div className={style.apeal}>
             <p className={style.text}>Бесплатная доставка</p>
-            <button className={style.close}>Свернуть</button>
+            <button onClick={hideOrder} className={style.close}>
+              Свернуть
+            </button>
           </div>
         </div>
       </section>
